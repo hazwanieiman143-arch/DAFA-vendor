@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAFA Vendor System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-brand"><div class="brand-mark">D</div><div><b>DAFA</b><span>Vendor System</span></div></div>
+    <h1>Sign in</h1>
+    <p class="login-subtitle">Choose your account type to continue.</p>
+    <div class="role-switch">
+      <button type="button" class="role-btn active" data-role="admin" onclick="selectLoginRole('admin')">Admin</button>
+      <button type="button" class="role-btn" data-role="vendor" onclick="selectLoginRole('vendor')">Vendor</button>
+    </div>
+    <form id="loginForm" onsubmit="return handleLogin(event)">
+      <label>Email / Username<input id="loginEmail" required autocomplete="username"></label>
+      <label>Password<input id="loginPassword" type="password" required autocomplete="current-password"></label>
+      <button class="primary login-submit" type="submit">Login</button>
+      <div id="loginError" class="login-error"></div>
+    </form>
+    <div class="demo-hint">
+      <b>Demo access</b>
+      <span id="demoText">Admin: admin@dafa.local / admin123</span>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">D</div><div><b>DAFA</b><span>Vendor System</span></div></div>
+    <nav>
+      <p class="nav-label">MAIN</p>
+      <button class="nav-item admin-only" data-page="vendors"><span>♟</span>Vendors</button>
+      <button class="nav-item active" data-page="dashboard"><span>⌂</span>Dashboard</button>
+      <button class="nav-item" data-page="profile"><span>◉</span>Company Profile</button>
+      <button class="nav-item" data-page="products"><span>▣</span>Products</button>
+      <button class="nav-item" data-page="orders"><span>▤</span>Purchase Orders</button>
+      <button class="nav-item" data-page="delivery"><span>◫</span>Delivery</button>
+      <button class="nav-item" data-page="payments"><span>▱</span>Payments</button>
+      <p class="nav-label">COMMUNICATION</p>
+      <button class="nav-item" data-page="notifications"><span>◌</span>Notifications <em>3</em></button>
+      <button class="nav-item" data-page="support"><span>?</span>Support</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="vendor-mini"><div class="avatar" id="sidebarAvatar">AB</div><div><b id="sidebarVendorName">ABC Supplies</b><small id="sidebarVendorId">Vendor ID: V-00124</small></div></div><button class="logout" onclick="logout()">↪ Logout</button></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+      <div class="crumb"><span id="portalLabel">Vendor Portal</span> <span>/</span> <b id="pageTitle">Dashboard</b></div>
+      <div class="top-actions"><span id="roleBadge" class="role-badge">Vendor</span><button class="icon-btn">⌕</button><button class="icon-btn notif" onclick="showPage('notifications')">♢<i></i></button><div class="top-avatar" id="topAvatar">AB</div></div>
+    </header>
+
+    <section class="content">
+      <div id="dashboard" class="page active">
+        <div class="page-head"><div><h1>Welcome back, <span id="welcomeVendorName">ABC Supplies</span> 👋</h1><p>Here's what's happening with your vendor account today.</p></div><span class="status approved">● Approved Vendor</span></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-icon blue">▣</div><div><span>Total Products</span><strong>24</strong><small class="up">+3 this month</small></div></div>
+          <div class="stat"><div class="stat-icon orange">▤</div><div><span>Pending Orders</span><strong>8</strong><small>Needs attention</small></div></div>
+          <div class="stat"><div class="stat-icon purple">◫</div><div><span>Deliveries</span><strong>12</strong><small>4 in progress</small></div></div>
+          <div class="stat"><div class="stat-icon green">RM</div><div><span>Outstanding</span><strong>RM 8,450</strong><small>3 invoices</small></div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-head"><h2>Recent Purchase Orders</h2><button class="link-btn" onclick="showPage('orders')">View all →</button></div><div class="table-wrap"><table><thead><tr><th>PO Number</th><th>Date</th><th>Items</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+          <tr><td><b>PO-2026-0087</b></td><td>22 Sep 2026</td><td>5</td><td>RM 2,450</td><td><span class="pill pending">Pending</span></td></tr>
+          <tr><td><b>PO-2026-0081</b></td><td>20 Sep 2026</td><td>3</td><td>RM 1,280</td><td><span class="pill processing">Processing</span></td></tr>
+          <tr><td><b>PO-2026-0075</b></td><td>18 Sep 2026</td><td>8</td><td>RM 3,600</td><td><span class="pill delivered">Delivered</span></td></tr>
+          </tbody></table></div></div>
+          <div class="card"><div class="card-head"><h2>Notifications</h2><button class="link-btn" onclick="showPage('notifications')">View all →</button></div>
+            <div class="notice"><span class="notice-icon blue">▤</span><div><b>New Purchase Order</b><p>PO-2026-0087 requires your confirmation.</p><small>2 hours ago</small></div></div>
+            <div class="notice"><span class="notice-icon green">✓</span><div><b>Payment Received</b><p>Invoice INV-0041 has been paid.</p><small>Yesterday</small></div></div>
+            <div class="notice"><span class="notice-icon orange">!</span><div><b>Document Reminder</b><p>Business licence expires in 30 days.</p><small>2 days ago</small></div></div>
+          </div>
+        </div>
+        <div class="card"><div class="card-head"><h2>Delivery Overview</h2><button class="link-btn" onclick="showPage('delivery')">Manage deliveries →</button></div><div class="progress-row"><div><b>Current month</b><span>12 total deliveries</span></div><div class="progress"><i style="width:66%"></i></div><strong>8 / 12</strong></div></div>
+      </div>
+
+      <div id="profile" class="page"><div class="page-head"><div><h1>Company Profile</h1><p>Keep your vendor information and documents up to date.</p></div><button class="primary" onclick="saveProfile()">Save Changes</button></div>
+        <div class="card form-card"><h2>Company Information</h2><div class="form-grid">
+          <label>Company Name<input id="company" value="ABC Supplies Sdn. Bhd."></label><label>Vendor ID<input value="V-00124" disabled></label>
+          <label>Contact Person<input value="Ahmad Bin Bakar"></label><label>Phone Number<input value="+60 12-345 6789"></label>
+          <label>Email<input value="admin@abcsupplies.com"></label><label>Registration No.<input value="202401012345"></label>
+          <label class="full">Business Address<textarea>Lot 12, Jalan Industri, 93350 Kuching, Sarawak</textarea></label>
+        </div></div>
+        <div class="card form-card"><h2>Vendor Documents</h2><div class="doc-list"><div class="doc"><span>▤</span><div><b>Business Registration</b><small>SSM_Registration.pdf · Uploaded 12 Aug 2026</small></div><span class="pill delivered">Verified</span><button>View</button></div><div class="doc"><span>▤</span><div><b>Business Licence</b><small>Licence_2026.pdf · Uploaded 12 Aug 2026</small></div><span class="pill delivered">Verified</span><button>View</button></div><div class="doc"><span>▤</span><div><b>Bank Confirmation</b><small>Bank_Letter.pdf · Uploaded 13 Aug 2026</small></div><span class="pill pending">Review</span><button>View</button></div></div></div>
+      </div>
+
+      <div id="products" class="page"><div class="page-head"><div><h1>Products</h1><p>Manage products and services registered with DAFA.</p></div><button class="primary" onclick="openModal()">+ Add Product</button></div>
+        <div class="card"><div class="toolbar"><input class="search" placeholder="⌕  Search products..." oninput="filterTable(this.value,'productTable')"><select><option>All Status</option><option>Active</option><option>Pending</option></select></div><div class="table-wrap"><table id="productTable"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        <tr><td><b>Office Paper A4</b><small>SKU: PAP-A4-001</small></td><td>Stationery</td><td>RM 18.00</td><td>450</td><td><span class="pill delivered">Active</span></td><td><button class="table-btn">Edit</button></td></tr>
+        <tr><td><b>Printer Toner</b><small>SKU: TON-HP-021</small></td><td>Office Supplies</td><td>RM 125.00</td><td>85</td><td><span class="pill delivered">Active</span></td><td><button class="table-btn">Edit</button></td></tr>
+        <tr><td><b>Desk Organizer</b><small>SKU: DSK-ORG-011</small></td><td>Stationery</td><td>RM 32.50</td><td>120</td><td><span class="pill pending">Pending</span></td><td><button class="table-btn">Edit</button></td></tr>
+        </tbody></table></div></div>
+      </div>
+
+      <div id="orders" class="page"><div class="page-head"><div><h1>Purchase Orders</h1><p>Review and manage purchase orders received from DAFA.</p></div></div><div class="card"><div class="toolbar"><input class="search" placeholder="⌕ Search PO number..."><select><option>All Status</option><option>Pending</option><option>Processing</option><option>Delivered</option></select></div><div class="table-wrap"><table><thead><tr><th>PO Number</th><th>Order Date</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody>
+      <tr><td><b>PO-2026-0087</b></td><td>22 Sep 2026</td><td>5 items</td><td>RM 2,450.00</td><td><span class="pill pending">Pending</span></td><td><button class="primary small">Review</button></td></tr><tr><td><b>PO-2026-0081</b></td><td>20 Sep 2026</td><td>3 items</td><td>RM 1,280.00</td><td><span class="pill processing">Processing</span></td><td><button class="table-btn">View</button></td></tr><tr><td><b>PO-2026-0075</b></td><td>18 Sep 2026</td><td>8 items</td><td>RM 3,600.00</td><td><span class="pill delivered">Delivered</span></td><td><button class="table-btn">View</button></td></tr></tbody></table></div></div></div>
+
+      <div id="delivery" class="page"><div class="page-head"><div><h1>Delivery</h1><p>Track delivery schedules and update fulfilment status.</p></div></div><div class="card"><div class="delivery-card"><div class="delivery-top"><div><b>DEL-2026-0048</b><p>PO-2026-0081 · 3 items</p></div><span class="pill processing">In Progress</span></div><div class="steps"><span class="done">✓ Order</span><span class="done">✓ Processing</span><span class="current">● Shipping</span><span>○ Delivered</span></div></div><div class="delivery-card"><div class="delivery-top"><div><b>DEL-2026-0042</b><p>PO-2026-0075 · 8 items</p></div><span class="pill delivered">Delivered</span></div><div class="steps"><span class="done">✓ Order</span><span class="done">✓ Processing</span><span class="done">✓ Shipping</span><span class="done">✓ Delivered</span></div></div></div></div>
+
+      <div id="payments" class="page"><div class="page-head"><div><h1>Payments</h1><p>View invoices, payment status and payment history.</p></div></div><div class="stats"><div class="stat"><div class="stat-icon green">RM</div><div><span>Total Paid</span><strong>RM 32,840</strong><small>This year</small></div></div><div class="stat"><div class="stat-icon orange">RM</div><div><span>Outstanding</span><strong>RM 8,450</strong><small>3 invoices</small></div></div></div><div class="card"><div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Date</th><th>PO Number</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td><b>INV-0043</b></td><td>22 Sep 2026</td><td>PO-2026-0087</td><td>RM 2,450</td><td><span class="pill pending">Outstanding</span></td></tr><tr><td><b>INV-0041</b></td><td>18 Sep 2026</td><td>PO-2026-0075</td><td>RM 3,600</td><td><span class="pill delivered">Paid</span></td></tr><tr><td><b>INV-0038</b></td><td>10 Sep 2026</td><td>PO-2026-0069</td><td>RM 2,400</td><td><span class="pill delivered">Paid</span></td></tr></tbody></table></div></div></div>
+
+      <div id="notifications" class="page"><div class="page-head"><div><h1>Notifications</h1><p>Stay updated with your vendor activities.</p></div><button class="link-btn">Mark all as read</button></div><div class="card"><div class="notice unread"><span class="notice-icon blue">▤</span><div><b>New Purchase Order — PO-2026-0087</b><p>A new purchase order has been issued and requires your confirmation.</p><small>2 hours ago</small></div></div><div class="notice unread"><span class="notice-icon green">✓</span><div><b>Payment Received — INV-0041</b><p>Your payment has been successfully processed.</p><small>Yesterday</small></div></div><div class="notice"><span class="notice-icon orange">!</span><div><b>Document Reminder</b><p>Your business licence will expire in 30 days. Please upload a renewed copy.</p><small>2 days ago</small></div></div></div></div>
+
+
+      <div id="vendors" class="page admin-only-page"><div class="page-head"><div><h1>Vendors</h1><p>Admin view — all registered vendors are visible here.</p></div><button class="primary" onclick="openVendorModal()">+ Add Vendor</button></div>
+        <div class="card"><div class="toolbar"><input class="search" placeholder="⌕ Search vendors..." oninput="filterTable(this.value,'vendorTable')"></div>
+          <div class="table-wrap"><table id="vendorTable"><thead><tr><th>Vendor</th><th>Vendor ID</th><th>Contact</th><th>Status</th></tr></thead><tbody>
+            <tr><td><b>ABC Supplies</b><small>ABC Supplies Sdn. Bhd.</small></td><td>V-00124</td><td>Ahmad Bin Bakar</td><td><span class="pill delivered">Approved</span></td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+
+      <div id="support" class="page"><div class="page-head"><div><h1>Support</h1><p>Need help? Send a message to the DAFA admin team.</p></div></div><div class="card form-card"><h2>Contact Admin</h2><div class="form-grid"><label>Subject<input placeholder="Enter subject"></label><label>Category<select><option>General Enquiry</option><option>Purchase Order</option><option>Payment</option><option>Delivery</option></select></label><label class="full">Message<textarea placeholder="Describe your enquiry..."></textarea></label></div><button class="primary" onclick="sendSupport()">Send Message</button></div></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><h2>Add Product</h2><label>Product Name<input placeholder="e.g. Office Chair"></label><label>Category<select><option>Stationery</option><option>Office Supplies</option><option>Equipment</option><option>Services</option></select></label><div class="two"><label>Price<input placeholder="RM 0.00"></label><label>Stock<input placeholder="0"></label></div><button class="primary" onclick="closeModal();toast('Product submitted for approval.')">Submit Product</button></div></div>
+<div id="toast"></div>
+<div class="modal" id="vendorModal"><div class="modal-box"><button class="close" onclick="closeVendorModal()">×</button><h2>Add Vendor Account</h2><p class="modal-note">New vendors start with an empty workspace. Existing vendor figures are not copied.</p><div class="form-grid"><label>Company Name<input id="newVendorName" placeholder="Company name"></label><label>Vendor ID<input id="newVendorId" placeholder="V-00125"></label><label>Email / Username<input id="newVendorEmail" placeholder="vendor@company.local"></label><label>Password<input id="newVendorPassword" type="password" placeholder="Create password"></label><label>Contact Person<input id="newVendorContact" placeholder="Contact person"></label><label>Initials<input id="newVendorInitials" maxlength="3" placeholder="AB"></label></div><button class="primary" onclick="createVendor()">Create Vendor</button><div id="vendorCreateError" class="login-error"></div></div></div>
+<script src="app.js"></script>
+</body>
+</html>
